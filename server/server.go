@@ -84,9 +84,12 @@ func (s *Server) handleConn(conn net.Conn, readFrom, writeTo chan []byte) {
 			buf := make([]byte, 1024)
 			n, err := conn.Read(buf)
 			if err != nil {
+				fmt.Printf("err %v\n", err)
 				break
 			}
+			fmt.Printf("send to chan\n")
 			writeTo <- buf[:n]
+			fmt.Printf("send to chan done\n")
 		}
 		cancel()
 	}()
@@ -100,7 +103,12 @@ func (s *Server) handleConn(conn net.Conn, readFrom, writeTo chan []byte) {
 			case <-ctx.Done():
 				break outer
 			case data := <-readFrom:
-				conn.Write(data)
+				fmt.Printf("read from chan\n")
+				_, err := conn.Write(data)
+				if err != nil {
+					fmt.Printf("failed %v\n", err)
+				}
+				fmt.Printf("wrote done\n")
 			}
 		}
 	}()

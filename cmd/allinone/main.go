@@ -5,10 +5,11 @@ import (
 	"net"
 	"time"
 
+	"github.com/alexcb/rsm/common"
 	"github.com/alexcb/rsm/server"
 )
 
-const addr = "127.0.0.1:5000"
+const addr = "127.0.0.1:5001"
 
 func shell() {
 	conn, err := net.Dial("tcp", addr)
@@ -23,7 +24,7 @@ func shell() {
 	}()
 
 	// identify we are the shell
-	conn.Write([]byte{0x01})
+	conn.Write([]byte{common.ShellID})
 
 	conn.Write([]byte("shell data"))
 
@@ -48,8 +49,8 @@ func term() {
 		}
 	}()
 
-	// identify we are the shell
-	conn.Write([]byte{0x02})
+	// identify we are the term
+	conn.Write([]byte{common.TermID})
 
 	conn.Write([]byte("term data"))
 
@@ -63,7 +64,7 @@ func term() {
 }
 
 func main() {
-	x := server.NewServer()
+	x := server.NewServer(addr)
 
 	go x.Start()
 

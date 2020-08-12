@@ -92,6 +92,7 @@ func interactiveMode(remoteConsoleAddr string) error {
 			if err != nil {
 				break
 			}
+			fmt.Printf("got data\n")
 			switch connDataType {
 			case 1:
 				handlePtyData(ptmx, data)
@@ -112,6 +113,7 @@ func interactiveMode(remoteConsoleAddr string) error {
 				panic(err)
 			}
 			buf = buf[:n]
+			fmt.Printf("sending data\n")
 			common.WriteConnData(conn, 1, buf)
 
 		}
