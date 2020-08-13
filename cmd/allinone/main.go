@@ -34,7 +34,7 @@ func shell() {
 		panic(err)
 	}
 	buf = buf[:n]
-	fmt.Printf("got back: %v\n", buf)
+	fmt.Printf("shell got back: %v\n", string(buf))
 }
 
 func term() {
@@ -60,7 +60,7 @@ func term() {
 		panic(err)
 	}
 	buf = buf[:n]
-	fmt.Printf("got back: %v\n", buf)
+	fmt.Printf("term got back: %v\n", string(buf))
 }
 
 func main() {

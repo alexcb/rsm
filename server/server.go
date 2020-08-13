@@ -87,7 +87,7 @@ func (s *Server) handleConn(conn net.Conn, readFrom, writeTo chan []byte) {
 				fmt.Printf("err %v\n", err)
 				break
 			}
-			fmt.Printf("send to chan\n")
+			fmt.Printf("read from %v; send to chan\n", conn)
 			writeTo <- buf[:n]
 			fmt.Printf("send to chan done\n")
 		}
@@ -103,7 +103,7 @@ func (s *Server) handleConn(conn net.Conn, readFrom, writeTo chan []byte) {
 			case <-ctx.Done():
 				break outer
 			case data := <-readFrom:
-				fmt.Printf("read from chan\n")
+				fmt.Printf("read from chan; writting to conn %v %d bytes\n", conn, len(data))
 				_, err := conn.Write(data)
 				if err != nil {
 					fmt.Printf("failed %v\n", err)
@@ -127,8 +127,6 @@ func (s *Server) handleShellConn(conn net.Conn) {
 func (s *Server) handleRequest(conn net.Conn) {
 	defer conn.Close()
 
-	fmt.Printf("got conn\n")
-
 	buf := make([]byte, 1)
 	conn.Read(buf)
 
@@ -142,7 +140,6 @@ func (s *Server) handleRequest(conn net.Conn) {
 		fmt.Fprintf(os.Stderr, "unexpected data")
 		return
 	}
-	fmt.Printf("got data %v\n", buf[0])
 
 	err := func() error {
 		s.mux.Lock()

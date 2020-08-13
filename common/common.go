@@ -40,8 +40,7 @@ func WriteConnData(conn net.Conn, n int, data []byte) error {
 	if err != nil {
 		return err
 	}
-	_, err = conn.Write(data)
-	return err
+	return writeUint16PrefixedData(conn, data)
 }
 
 func writeUint16PrefixedData(w io.Writer, data []byte) error {
@@ -51,5 +50,6 @@ func writeUint16PrefixedData(w io.Writer, data []byte) error {
 		return err
 	}
 	_, err = w.Write(data)
+
 	return err
 }

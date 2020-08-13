@@ -92,7 +92,6 @@ func interactiveMode(remoteConsoleAddr string) error {
 			if err != nil {
 				break
 			}
-			fmt.Printf("got data\n")
 			switch connDataType {
 			case 1:
 				handlePtyData(ptmx, data)

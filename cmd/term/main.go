@@ -56,13 +56,11 @@ func connectTerm(addr string) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
 		for {
-			fmt.Printf("reading...\n")
 			connDataType, data, err := common.ReadConnData(conn)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "failed to read: %v\n", err)
 				break
 			}
-			fmt.Printf("got data %d\n", connDataType)
 			switch connDataType {
 			case 1:
 				handlePtyData(data)
